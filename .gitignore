@@ -1,0 +1,20 @@
+# Azure Lighthouse public repo - minimal ignore
+# This repo holds source JSON that MUST be published (mainTemplate.json,
+# createUiDefinition.json). Do not ignore *.json here.
+
+# OS cruft
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Editor / IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs / temp
+*.log
+*.tmp
