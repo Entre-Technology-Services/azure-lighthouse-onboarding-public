@@ -1,0 +1,88 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "comments": "Entre Technology Services - Azure Lighthouse standard delegation (V2). Customer-agnostic. Only the customer/offer name is entered at deploy time; all managing-tenant and group values are fixed."
+  },
+  "parameters": {
+    "mspOfferName": {
+      "type": "string",
+      "metadata": {
+        "description": "Customer name. Shown to the customer under Service providers and used as the delegation (offer) name. Must be unique per subscription."
+      }
+    },
+    "mspOfferDescription": {
+      "type": "string",
+      "defaultValue": "Entre Technology Services - Azure Lighthouse delegated management",
+      "metadata": {
+        "description": "Optional description shown to the customer under Service providers."
+      }
+    }
+  },
+  "variables": {
+    "managedByTenantId": "55705222-2816-4f25-8c0e-f9fa312aa10c",
+    "mspRegistrationName": "[guid(parameters('mspOfferName'))]",
+    "mspAssignmentName": "[guid(parameters('mspOfferName'))]",
+    "authorizations": [
+      {
+        "principalId": "220d8aee-c5e2-4950-869a-845eb1f7df00",
+        "principalIdDisplayName": "SG-AzureLH-ReadOnly",
+        "roleDefinitionId": "acdd72a7-3385-48ef-bd42-f606fba81ae7"
+      },
+      {
+        "principalId": "d1835869-3c73-4fdd-8013-d1516f83b2f4",
+        "principalIdDisplayName": "SG-AzureLH-Operations-Admins",
+        "roleDefinitionId": "b24988ac-6180-42a0-ab88-20f7382dd24c"
+      },
+      {
+        "principalId": "d1835869-3c73-4fdd-8013-d1516f83b2f4",
+        "principalIdDisplayName": "SG-AzureLH-Operations-Admins (remove delegation)",
+        "roleDefinitionId": "91c1777a-f3dc-4fae-b103-61d183457e46"
+      },
+      {
+        "principalId": "d8835a47-4b8a-4674-a4a7-1339991bbfa7",
+        "principalIdDisplayName": "SG-AzureLH-Commitments-Admins",
+        "roleDefinitionId": "434105ed-43f6-45c7-a02f-909b2ba83430"
+      },
+      {
+        "principalId": "d8835a47-4b8a-4674-a4a7-1339991bbfa7",
+        "principalIdDisplayName": "SG-AzureLH-Commitments-Admins",
+        "roleDefinitionId": "f7b75c60-3036-4b75-91c3-6b41c27c1689"
+      }
+    ]
+  },
+  "resources": [
+    {
+      "type": "Microsoft.ManagedServices/registrationDefinitions",
+      "apiVersion": "2022-10-01",
+      "name": "[variables('mspRegistrationName')]",
+      "properties": {
+        "registrationDefinitionName": "[parameters('mspOfferName')]",
+        "description": "[parameters('mspOfferDescription')]",
+        "managedByTenantId": "[variables('managedByTenantId')]",
+        "authorizations": "[variables('authorizations')]"
+      }
+    },
+    {
+      "type": "Microsoft.ManagedServices/registrationAssignments",
+      "apiVersion": "2022-10-01",
+      "name": "[variables('mspAssignmentName')]",
+      "dependsOn": [
+        "[subscriptionResourceId('Microsoft.ManagedServices/registrationDefinitions', variables('mspRegistrationName'))]"
+      ],
+      "properties": {
+        "registrationDefinitionId": "[subscriptionResourceId('Microsoft.ManagedServices/registrationDefinitions', variables('mspRegistrationName'))]"
+      }
+    }
+  ],
+  "outputs": {
+    "mspOfferName": {
+      "type": "string",
+      "value": "[concat('Managed by ', parameters('mspOfferName'))]"
+    },
+    "authorizationCount": {
+      "type": "int",
+      "value": "[length(variables('authorizations'))]"
+    }
+  }
+}
