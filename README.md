@@ -15,14 +15,20 @@ repository.
 ## Technician workflow
 
 1. Click **Deploy to Azure** above.
-2. When prompted, sign in and **switch to the customer's directory**.
+2. When prompted, sign in to the customer's Azure tenant with an account
+   that holds **OWNER** on the target subscription (the customer's owner
+   account, or the customer-tenant break-glass account per SOP-SEC-002).
 3. Select the **subscription** to delegate.
-4. Enter the **Customer name** (e.g., Bank of the Rockies).
+4. Enter the **Customer name** that **we** will see in Azure
+   (e.g., Bank of the Rockies).
 5. Review and select **Create**.
-6. Verify in the Entre tenant: **Azure Lighthouse -> My customers** shows the
-   customer. If it does not appear, check **Portal Settings -> Directories +
-   Subscriptions** and include the customer directory / All subscriptions.
-
+6. Verify in the Entre tenant: **Azure Lighthouse -> My customers** shows
+   the customer. If it does not appear, check **Portal Settings ->
+   Directories + Subscriptions** and include the customer directory /
+   All subscriptions.
+7. Sign out of the customer tenant. All day-2 work is done from the Entre
+   tenant via Azure Lighthouse.
+   
 The `Microsoft.ManagedServices` resource provider is registered automatically by
 the deployment form, so no manual registration step is required.
 
