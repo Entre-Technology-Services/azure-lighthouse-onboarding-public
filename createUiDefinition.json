@@ -1,0 +1,68 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/0.1.2-preview/CreateUIDefinition.MultiVm.json#",
+  "handler": "Microsoft.Azure.CreateUIDef",
+  "version": "0.1.2-preview",
+  "parameters": {
+    "config": {
+      "isWizard": false,
+      "basics": {
+        "description": "Entre Technology Services - Azure Lighthouse onboarding.\n\nSign in to the CUSTOMER tenant with an account that holds OWNER on the target subscription, select the subscription to delegate, choose a deployment region, and enter the customer name. This delegates the subscription to Entre's managing tenant using the standard role model (Reader, Contributor, Cost Management Contributor, Reservation Purchaser).",
+        "subscription": {
+          "constraints": {
+            "validations": []
+          },
+          "resourceProviders": [
+            "Microsoft.ManagedServices"
+          ]
+        },
+        "location": {
+          "visible": true,
+          "label": "Deployment region",
+          "toolTip": "Region used to store the deployment record. Azure Lighthouse resources are not regional; any region is fine.",
+          "resourceTypes": [
+            "Microsoft.ManagedServices/registrationDefinitions"
+          ]
+        }
+      }
+    },
+    "basics": [
+      {
+        "name": "mspOfferName",
+        "type": "Microsoft.Common.TextBox",
+        "label": "Customer name",
+        "toolTip": "The customer name Entre will see under Azure Lighthouse -> My customers, and the customer will see under Service providers. Must be unique per subscription (e.g., 'BotR' or 'AdvR Inc'). Allowed characters: letters, numbers, spaces, periods, underscores, and hyphens. Commas are not allowed.",
+        "constraints": {
+          "required": true,
+          "regex": "^[A-Za-z0-9 ._-]{3,80}$",
+          "validationMessage": "3-80 characters. Letters, numbers, spaces, periods, underscores, and hyphens only. No commas."
+        },
+        "visible": true
+      },
+      {
+        "name": "mspOfferDescription",
+        "type": "Microsoft.Common.TextBox",
+        "label": "Delegation description (optional)",
+        "defaultValue": "Entre Technology Services - Azure Lighthouse delegated management",
+        "toolTip": "Optional description shown to the customer under Service providers.",
+        "constraints": {
+          "required": false
+        },
+        "visible": true
+      },
+      {
+        "name": "infoManagingTenant",
+        "type": "Microsoft.Common.InfoBox",
+        "visible": true,
+        "options": {
+          "icon": "Info",
+          "text": "Managing tenant: Entre Technology Services (55705222-2816-4f25-8c0e-f9fa312aa10c). Roles delegated: Reader, Contributor, Cost Management Contributor, Reservation Purchaser, plus delegation-removal rights for Operations Admins. You must sign in with an account that holds Owner on the target subscription; a guest account will not work."
+        }
+      }
+    ],
+    "steps": [],
+    "outputs": {
+      "mspOfferName": "[basics('mspOfferName')]",
+      "mspOfferDescription": "[basics('mspOfferDescription')]"
+    }
+  }
+}
