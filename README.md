@@ -58,14 +58,3 @@ Managing tenant: Entre Technology Services (55705222-2816-4f25-8c0e-f9fa312aa10c
 
 - `mainTemplate.json` - subscription-scope Lighthouse delegation (customer-agnostic).
 - `createUiDefinition.json` - portal form (customer name + subscription picker).
-
-## Rebuilding the button URL
-
-Portal URL shape (both file URLs URL-encoded):
-
-    https://portal.azure.com/#create/Microsoft.Template/uri/<ENCODED_mainTemplate>/createUIDefinitionUri/<ENCODED_createUiDefinition>
-
-Raw file URLs (branch: main):
-
-    https://raw.githubusercontent.com/Entre-Technology-Services/azure-lighthouse-onboarding-public/main/mainTemplate.json
-    https://raw.githubusercontent.com/Entre-Technology-Services/azure-lighthouse-onboarding-public/main/createUiDefinition.json
